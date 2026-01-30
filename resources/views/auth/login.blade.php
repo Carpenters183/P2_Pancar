@@ -18,6 +18,12 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/styles/core.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/styles/icon-font.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/styles/style.css') }}">
+    <style>
+.letter-header-right {
+    text-align: right;
+    margin-bottom: 20px;
+}
+</style>
 </head>
 
 <body>
@@ -68,10 +74,17 @@
                 <div class="col-md-7">
                     <div class="card" id="areaSurat">
                         <div class="card-body" style="font-family:'Times New Roman', serif;">
+                            <!-- Judul Surat -->
+                            <h4 class="text-center fw-bold mb-4 letter-title">
+                                Application Letter
+                            </h4>
+                        
+                            <div class="letter-header-right">
+                                <p id="p_address">[Your address]</p>
+                                <p id="p_date">[Date]</p>
+                            </div>
 
-                            <p id="p_name">[Your name]</p>
-                            <p id="p_address">[Your address]</p>
-                            <p id="p_date">[Date]</p>
+                             <p id="p_name">[Your name]</p>
 
                             <br>
 
@@ -143,39 +156,74 @@
 </script>
 
 <script>
-    document.getElementById("btnPrint").addEventListener("click", function () {
-        const surat = document.getElementById("areaSurat").innerHTML;
+document.getElementById("btnPrint").addEventListener("click", function () {
 
-        const win = window.open("", "", "width=800,height=600");
-        win.document.write(`
-            <html>
-            <head>
-                <title>Cetak Surat</title>
-                <style>
-                    body {
-                        font-family: 'Times New Roman', serif;
-                        padding: 30px;
-                    }
-                </style>
-            </head>
-            <body>
-                ${surat}
-                <script>
-                    window.onload = function() {
-                        window.print();
-                        window.onafterprint = window.close;
-                    }
-                <\/script>
-            </body>
-            </html>
-        `);
-        win.document.close();
-    });
+    const surat = document.getElementById("areaSurat").innerHTML;
+    const win = window.open("", "_blank", "width=800,height=600");
 
-    document.getElementById("btnClear").addEventListener("click", () => {
-        document.querySelectorAll("input, textarea").forEach(el => el.value = "");
-        document.querySelectorAll('[id^="p_"]').forEach(el => el.innerText = el.dataset.default);
-    });
+    win.document.write(`
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+
+<style>
+    @page {
+        margin: 3cm;
+    }
+
+    body {
+        font-family: "Times New Roman", serif;
+        color: #000;
+        line-height: 1.6;
+    }
+
+    /* JUDUL SURAT */
+    h4, .letter-title {
+        text-align: center !important;
+        font-weight: bold;
+        margin-bottom: 30px;
+        width: 100%;
+        display: block;
+    }
+.letter-header-right {
+    text-align: right !important;
+    margin-bottom: 20px;
+}
+    
+    /* BUANG SEMUA STYLE TEMPLATE */
+    .card,
+    .card-body {
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+
+    p {
+        margin: 0 0 10px 0;
+    }
+</style>
+
+</head>
+<body>
+
+${surat}
+
+<script>
+    window.onload = function () {
+        window.print();
+        window.onafterprint = window.close;
+    }
+<\/script>
+
+</body>
+</html>
+    `);
+
+    win.document.close();
+});
 </script>
 
 </body>
